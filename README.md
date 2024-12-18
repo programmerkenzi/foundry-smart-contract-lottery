@@ -1,1 +1,1 @@
-# fundry-smart-contract-lottery
+# A simple lottery smart contract
