@@ -51,6 +51,7 @@ contract Raffle is VRFConsumerBaseV2Plus {
     /**
      * Type declarations
      */
+
     enum RaffleState {
         OPEN,
         CALCULATING
@@ -131,12 +132,13 @@ contract Raffle is VRFConsumerBaseV2Plus {
 
     function pickWinner() external {
         (bool upkeepNeeded, ) = checkUpkeep("");
-        if (!upkeepNeeded)
+        if (!upkeepNeeded) {
             revert Raffle__UpkeepNotNeeded(
                 address(this).balance,
                 s_players.length,
                 uint256(s_raffleState)
             );
+        }
         s_raffleState = RaffleState.CALCULATING;
 
         VRFV2PlusClient.RandomWordsRequest memory request = VRFV2PlusClient
@@ -160,6 +162,10 @@ contract Raffle is VRFConsumerBaseV2Plus {
      */
     function getEntranceFee() external view returns (uint256) {
         return i_entranceFee;
+    }
+
+    function getRaffleState() external view returns (RaffleState) {
+        return s_raffleState;
     }
 
     function fulfillRandomWords(
